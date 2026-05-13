@@ -1,5 +1,919 @@
 # =============================================================================
-# PLACEHOLDER — Replace with the actual how-to-criteria-examples.yaml content.
-# This file defines 26 verification criteria (C01-C10, H01-H16) with GOOD and
-# BAD examples for each.
+# How-to guides verification criteria — examples of good and bad practice
 # =============================================================================
+
+# -----------------------------------------------------------------------------
+# Common checks (applicable to any Diataxis document type)
+# -----------------------------------------------------------------------------
+
+- id: C01
+  criterion: The document has a valid heading hierarchy, no duplicate top-level titles, and no skipped structural levels. Overall syntax check?
+  good:
+  - |-
+    # How to configure LXD storage
+
+    ## Prerequisites
+
+    ...
+
+    ## Create a storage pool
+
+    ### Choose a driver
+
+    ...
+
+    ### Set pool options
+
+    ...
+
+    ## Verify the storage pool
+
+    ...
+  - |-
+    How to configure LXD storage
+    ============================
+
+    Prerequisites
+    -------------
+
+    ...
+
+    Create a storage pool
+    ---------------------
+
+    Choose a driver
+    ~~~~~~~~~~~~~~~
+
+    ...
+
+    Set pool options
+    ~~~~~~~~~~~~~~~~
+
+    ...
+
+    Verify the storage pool
+    -----------------------
+
+    ...
+  bad:
+  - |-
+    # How to configure LXD storage
+
+    ### Create a storage pool
+
+    ...
+
+    ## Prerequisites
+
+    ...
+
+    # Verify the storage pool
+
+    ...
+  - |-
+    How to configure LXD storage
+    ============================
+
+    Create a storage pool
+    ~~~~~~~~~~~~~~~~~~~~~
+
+    ...
+
+    Prerequisites
+    =============
+
+    ...
+
+    Verify the storage pool
+    -----------------------
+
+    ...
+- id: C02
+  criterion: Terminology, product names, command names, UI labels, and placeholder names are used consistently.
+  good:
+  - Consistently using "LXD" (not "lxd" or "Lxd") in prose, `lxd` in commands, and `<instance-name>` as placeholder throughout the guide.
+  - Referring to the management interface as "MAAS UI" every time, and using `$PROFILE` as the CLI profile placeholder in every command.
+  bad:
+  - The first paragraph says "LXD container", a later section says "lxd instance", and the final step says "LXC virtual machine".
+  - One command uses `$PROFILE`, another uses `$MAAS_PROFILE`, and a third uses `<profile-name>` — all referring to the same value.
+- id: C03
+  criterion: The language is concise, direct, and oriented toward a user who is trying to complete work, not study a topic.
+  good:
+  - |-
+    Install LXD:
+
+    ```bash
+    sudo snap install lxd
+    ```
+  - |-
+    Stop the MAAS services before editing the configuration file:
+
+    ```bash
+    sudo snap stop maas
+    ```
+  bad:
+  - |-
+    LXD is a modern, secure, and powerful system container and virtual machine manager. It is developed by Canonical and is available as a snap package. In this section, we will walk through the installation process.
+
+    To install LXD, run:
+
+    ```bash
+    sudo snap install lxd
+    ```
+  - It is generally considered a best practice to stop all running MAAS services prior to modifying any configuration files, as this helps ensure data integrity and prevents potential conflicts between the running services and the changes you are about to make.
+- id: C04
+  criterion: Required commands, configuration snippets, file paths, placeholders, and code blocks are formatted correctly.
+  good:
+  - |-
+    To create a new instance with `lxc launch`:
+
+    ```bash
+    lxc launch ubuntu:24.04 <instance-name>
+    ```
+
+    Replace `<instance-name>` with a name for your instance.
+  - |-
+    To create a new instance with ``lxc launch``:
+
+    .. code-block:: bash
+
+       lxc launch ubuntu:24.04 <instance-name>
+
+    Replace ``<instance-name>`` with a name for your instance.
+  - |-
+    Check the MAAS service status:
+
+    ```{terminal}
+    :user: root
+    :host: maas-region
+    maas status
+
+    bind9         RUNNING   pid 7140, uptime 2 days, 03:12:45
+    regiond       RUNNING   pid 7141, uptime 2 days, 03:12:45
+    ```
+  - |-
+    Check the MAAS service status:
+
+    .. terminal::
+       :user: root
+       :host: maas-region
+
+       maas status
+
+       bind9         RUNNING   pid 7140, uptime 2 days, 03:12:45
+       regiond       RUNNING   pid 7141, uptime 2 days, 03:12:45
+  bad:
+  - |-
+    Run the lxc launch command to create a new instance:
+
+    lxc launch ubuntu:24.04 <instance-name>
+
+    Replace <instance-name> with a name for your instance.
+  - |-
+    Run the lxc launch command:
+
+       lxc launch ubuntu:24.04 <instance-name>
+  - |-
+    ```{terminal}
+    maas status
+    bind9         RUNNING   pid 7140, uptime 2 days, 03:12:45
+    regiond       RUNNING   pid 7141, uptime 2 days, 03:12:45
+    ```
+- id: C05
+  criterion: Code blocks declare an appropriate language where the documentation format supports it.
+  good:
+  - |-
+    ```yaml
+    config:
+      user.network-config: |
+        network:
+          version: 2
+          ethernets:
+            enp5s0:
+              dhcp4: true
+    ```
+  - |-
+    .. code-block:: yaml
+
+       config:
+         user.network-config: |
+           network:
+             version: 2
+             ethernets:
+               enp5s0:
+                 dhcp4: true
+  - |-
+    ```bash
+    sudo snap install lxd --channel=latest/stable
+    lxd init --auto
+    ```
+  - |-
+    ```{terminal}
+    snap list lxd
+
+    Name  Version  Rev    Tracking       Publisher   Notes
+    lxd   5.21.2   29351  latest/stable  canonical✓  -
+    ```
+  bad:
+  - |-
+    ```
+    config:
+      user.network-config: |
+        network:
+          version: 2
+          ethernets:
+            enp5s0:
+              dhcp4: true
+    ```
+  - |-
+    .. code-block::
+
+       config:
+         user.network-config: |
+           network:
+             version: 2
+             ethernets:
+               enp5s0:
+                 dhcp4: true
+  - |-
+    ```text
+    sudo snap install lxd --channel=latest/stable
+    lxd init --auto
+    ```
+  - |-
+    ```bash
+    $ snap list lxd
+    Name  Version  Rev    Tracking       Publisher   Notes
+    lxd   5.21.2   29351  latest/stable  canonical✓  -
+    ```
+- id: C06
+  criterion: Commands, JSON, YAML, Python, shell snippets, or other machine-readable examples are syntactically valid where validation is possible.
+  good:
+  - |-
+    ```yaml
+    channels:
+      latest/stable: 5.21.2
+      latest/candidate: 5.22.0
+      latest/edge: git-abc1234
+    ```
+  - |-
+    ```json
+    {
+      "name": "my-network",
+      "type": "bridge",
+      "config": {
+        "ipv4.address": "10.0.0.1/24",
+        "ipv4.nat": "true"
+      }
+    }
+    ```
+  bad:
+  - |-
+    ```yaml
+    channels:
+      latest/stable 5.21.2
+      latest/candidate 5.22.0
+      latest/edge git-abc1234
+    ```
+  - |-
+    ```json
+    {
+      name: "my-network",
+      type: "bridge",
+      config: {
+        ipv4.address: "10.0.0.1/24",
+        ipv4.nat: "true",
+      }
+    }
+    ```
+- id: C07
+  criterion: Placeholders and example values are understandable, usable, and consistent in the context of the task.
+  good:
+  - |-
+    ```bash
+    lxc launch ubuntu:24.04 <instance-name> --storage <pool-name>
+    ```
+
+    Replace `<instance-name>` with the name for your new instance and `<pool-name>` with the target storage pool.
+  - |-
+    ```bash
+    maas $PROFILE machines read | jq '.[] | .hostname'
+    ```
+  bad:
+  - |-
+    ```bash
+    lxc launch ubuntu:24.04 foo --storage bar
+    ```
+  - |-
+    ```bash
+    lxc launch ubuntu:24.04 <name> --storage <value>
+    ```
+  - |-
+    ```bash
+    maas $PROFILE machines read | jq '.[] | .hostname'
+    ```
+
+    Replace `$PROFILE` with your profile name.
+
+    ---
+
+    ```bash
+    maas login admin http://<MAAS_IP>:5240/MAAS/api/2.0/ <API_KEY>
+    ```
+
+    Replace `$PROFILE` with the profile identifier.
+- id: C08
+  criterion: Risky, destructive, security-sensitive, or irreversible actions are explained before the user performs them.
+  good:
+  - |-
+    :::{warning}
+    The following command permanently deletes the controller and all associated models, applications, and data. This action cannot be undone.
+    :::
+
+    ```bash
+    juju destroy-controller my-controller --destroy-all-models --destroy-storage
+    ```
+  - |-
+    .. warning::
+
+       The following command permanently deletes the controller and all associated models,
+       applications, and data. This action cannot be undone.
+
+    .. code-block:: bash
+
+       juju destroy-controller my-controller --destroy-all-models --destroy-storage
+  bad:
+  - |-
+    ```bash
+    juju destroy-controller my-controller --destroy-all-models --destroy-storage
+    ```
+
+    > **Warning:** This deleted everything and cannot be undone.
+  - Remove the controller by running `juju destroy-controller my-controller --destroy-all-models --destroy-storage`.
+- id: C09
+  criterion: Warning, note, and caution blocks are not too frequent (not more than two per screen) and placed near the relevant steps rather than far away from the action they affect.
+  good:
+  - |-
+    Install the snap:
+
+    ```bash
+    sudo snap install maas --channel=3.5/stable
+    ```
+
+    :::{note}
+    If you are behind a proxy, configure snapd first. See [Snap proxy configuration](/reference/proxy).
+    :::
+  - |-
+    Install the snap:
+
+    .. code-block:: bash
+
+       sudo snap install maas --channel=3.5/stable
+
+    .. note::
+
+       If you are behind a proxy, configure ``snapd`` first.
+       See :ref:`snap-proxy-configuration`.
+  bad:
+  - |-
+    :::{note}
+    You need Ubuntu 22.04 or later.
+    :::
+
+    :::{warning}
+    Do not use the Debian package if you have a snap installed.
+    :::
+
+    :::{caution}
+    Always back up before upgrading.
+    :::
+
+    :::{note}
+    The snap channel determines the version.
+    :::
+
+    Install the snap:
+
+    ```bash
+    sudo snap install maas --channel=3.5/stable
+    ```
+  - |-
+    :::{warning}
+    The `destroy-controller` command in step 5 will delete all your data.
+    :::
+
+    ## Step 1: Install Juju
+
+    ...
+
+    ## Step 2: Add a cloud
+
+    ...
+
+    ## Step 3: Add credentials
+
+    ...
+
+    ## Step 4: Bootstrap
+
+    ...
+
+    ## Step 5: Destroy the controller
+
+    ```bash
+    juju destroy-controller my-controller
+    ```
+- id: C10
+  criterion: Command introductions state the goal directly without redundant phrasing such as 'run the following command', 'by running the command below', or 'execute the following'.
+  good:
+  - |-
+    Create a new instance:
+
+    ```bash
+    lxc launch ubuntu:24.04 my-instance
+    ```
+  - |-
+    Check the cluster status:
+
+    ```bash
+    juju status
+    ```
+  - |-
+    To enable TLS, update the MAAS configuration:
+
+    ```bash
+    maas $PROFILE maas set-config name=tls_port value=5443
+    ```
+  bad:
+  - |-
+    To create a new instance, run the following command:
+
+    ```bash
+    lxc launch ubuntu:24.04 my-instance
+    ```
+  - |-
+    Check the cluster status by running:
+
+    ```bash
+    juju status
+    ```
+  - |-
+    Execute the command below to enable TLS:
+
+    ```bash
+    maas $PROFILE maas set-config name=tls_port value=5443
+    ```
+
+# -----------------------------------------------------------------------------
+# How-to specific checks
+# -----------------------------------------------------------------------------
+
+- id: H01
+  criterion: The title clearly expresses a specific practical goal that the user can accomplish.
+  good:
+  - How to back up the MAAS database
+  - How to create a virtual machine with LXD
+  - How to deploy a Kubernetes charm with Juju
+  bad:
+  - MAAS backup
+  - LXD instances
+  - Working with Juju charms
+- id: H02
+  criterion: The title and opening paragraph describe the same goal, without shifting scope or introducing a different task.
+  good:
+  - |-
+    # How to configure a network bridge in LXD
+
+    This guide shows how to create and configure a network bridge so that your LXD instances can communicate with the host network.
+  - |-
+    # How to set up high availability for MAAS
+
+    This guide walks you through configuring a secondary rack controller and enabling high availability for your MAAS region.
+  bad:
+  - |-
+    # How to configure a network bridge in LXD
+
+    LXD supports many network types, including bridges, macvlan, sriov, and OVN. This guide provides a general overview of LXD networking concepts.
+  - |-
+    # How to set up high availability for MAAS
+
+    This guide covers all aspects of MAAS installation, including snap and Debian package options, database configuration, and optional high availability setup.
+- id: H03
+  criterion: The guide begins with a clear statement of intent explaining what the user will achieve.
+  good:
+  - This guide shows you how to add a new member to an existing MicroCloud cluster.
+  - After completing these steps, you will have a fully functional Juju controller bootstrapped on your AWS cloud.
+  bad:
+  - MicroCloud supports adding cluster members after initial setup.
+  - Juju is a powerful application modelling tool that works across multiple cloud providers.
+- id: H04
+  criterion: The guide has a recognizable procedural structure, such as numbered steps, action-oriented headings, or clearly ordered sections.
+  good:
+  - |-
+    ## 1. Install the snap
+
+    ...
+
+    ## 2. Initialise the database
+
+    ...
+
+    ## 3. Create an admin user
+
+    ...
+  - |-
+    ## Prerequisites
+
+    ...
+
+    ## Create the storage pool
+
+    ...
+
+    ## Attach the pool to a project
+
+    ...
+
+    ## Verify the configuration
+
+    ...
+  bad:
+  - |-
+    ## Overview
+
+    MAAS can be installed in several ways. The snap is the recommended method.
+
+    ## Architecture
+
+    MAAS has a region controller and one or more rack controllers.
+
+    ## Configuration options
+
+    The following options are available...
+  - Install the snap by running the command. You can also use Debian packages. After installation you need to initialise the database. The database can be PostgreSQL or the built-in one. Then create a user.
+- id: H05
+  criterion: The guide follows a logical sequence from starting condition to completed outcome.
+  good:
+  - |-
+    ## Prerequisites
+
+    - A running MAAS instance (version 3.4 or later)
+    - Admin access to the MAAS CLI
+
+    ## Export the current configuration
+
+    Before making changes, export your existing settings:
+
+    ```bash
+    maas $PROFILE maas get-config > config-backup.json
+    ```
+
+    ## Apply the new settings
+
+    ...
+
+    ## Verify the changes
+
+    ...
+  - |-
+    ## Prerequisites
+
+    - LXD installed (version 5.21 or later)
+    - At least two machines on the same network
+
+    ## Initialise the first node
+
+    ```{terminal}
+    lxd init
+
+    Would you like to use LXD clustering? (yes/no) [default=no]: yes
+    ```
+
+    ## Join additional nodes
+
+    ...
+
+    ## Verify the cluster
+
+    ```{terminal}
+    lxc cluster list
+
+    +---------+---------------------------+--------+
+    |  NAME   |           URL             | STATE  |
+    +---------+---------------------------+--------+
+    | node-01 | https://192.168.1.10:8443 | ONLINE |
+    | node-02 | https://192.168.1.11:8443 | ONLINE |
+    +---------+---------------------------+--------+
+    ```
+  bad:
+  - |-
+    ## Verify the cluster
+
+    Run `juju status` to verify.
+
+    ## Add the cloud credentials
+
+    Before bootstrapping, add your credentials:
+
+    ```
+    juju add-credential aws
+    ```
+
+    ## Install Juju
+
+    Install Juju with:
+
+    ```
+    sudo snap install juju
+    ```
+- id: H06
+  criterion: Each major step tells the user what to do, rather than merely describing what is possible. There can be some conditions and branching.
+  good:
+  - |-
+    Create a new container:
+
+    ```bash
+    lxc launch ubuntu:24.04 my-container
+    ```
+  - |-
+    If your cloud requires a proxy, set the proxy address before bootstrapping:
+
+    ```
+    juju model-config http-proxy=http://proxy.example.com:3128
+    ```
+
+    Otherwise, proceed directly to the next step.
+  - |-
+    Remove the old controller:
+
+    ```bash
+    juju destroy-controller my-controller --destroy-all-models
+    ```
+  - |-
+    Initialise LXD with default settings:
+
+    ```{terminal}
+    lxd init --auto
+
+    LXD has been successfully configured.
+    ```
+  bad:
+  - Containers can be created using the `lxc launch` command. This command supports several flags, including `--vm` for virtual machines and `--network` for specifying a network.
+  - The `juju model-config` command can be used to set various model configuration options. For a full list of available options, see the reference documentation.
+  - Controllers can be removed with `juju destroy-controller`. The `--destroy-all-models` flag is also available.
+- id: H07
+  criterion: Step text and headings use imperative or action-oriented language where appropriate.
+  good:
+  - '## Install the MAAS snap'
+  - '## Configure the PostgreSQL connection'
+  - |-
+    Set the upstream DNS server:
+
+    ```bash
+    maas $PROFILE maas set-config name=upstream_dns value="8.8.8.8"
+    ```
+  bad:
+  - '## MAAS snap installation'
+  - '## The PostgreSQL connection configuration'
+  - |-
+    The upstream DNS server can be set using the following command:
+
+    ```bash
+    maas $PROFILE maas set-config name=upstream_dns value="8.8.8.8"
+    ```
+- id: H08
+  criterion: The guide avoids excessive conceptual explanation that would be better placed in explanation documentation.
+  good:
+  - |-
+    Bootstrap a Juju controller on AWS:
+
+    ```
+    juju bootstrap aws my-controller
+    ```
+
+    For more information on how Juju controllers work, see [Controllers](explanation/controllers.md).
+  bad:
+  - |-
+    A Juju controller is the central management node in a Juju deployment. It manages the state of all models, handles API requests from clients, and coordinates communication between machines. Controllers can be deployed in high-availability mode across multiple nodes. The controller agent runs inside a dedicated machine and monitors all units.
+
+    Bootstrap a Juju controller on AWS:
+
+    ```
+    juju bootstrap aws my-controller
+    ```
+- id: H09
+  criterion: The guide avoids reference-style content such as long option lists, exhaustive parameter tables, or API descriptions unless directly needed for the task.
+  good:
+  - |-
+    Set the minimum kernel version for commissioning:
+
+    ```bash
+    maas $PROFILE maas set-config name=default_min_hwe_kernel value=hwe-22.04
+    ```
+
+    For a full list of configuration keys, see the [MAAS configuration reference](/reference/maas-config).
+  bad:
+  - |-
+    The `set-config` command accepts the following keys:
+
+    | Key | Type | Default | Description |
+    |---|---|---|---|
+    | `upstream_dns` | string | `""` | Upstream DNS server |
+    | `dnssec_validation` | string | `auto` | DNSSEC validation mode |
+    | `ntp_servers` | string | `""` | NTP server addresses |
+    | `default_min_hwe_kernel` | string | `""` | Minimum HWE kernel |
+    | `maas_name` | string | `MAAS` | MAAS instance name |
+    | `enable_analytics` | bool | `true` | Enable analytics |
+    | `default_storage_layout` | string | `flat` | Default storage layout |
+    | ... | ... | ... | ... |
+- id: H10
+  criterion: The guide identifies necessary prerequisites, assumptions, tools, permissions, or starting conditions.
+  good:
+  - |-
+    ## Prerequisites
+
+    - Ubuntu 24.04 LTS or later
+    - `snapd` version 2.58 or later
+    - Root or `sudo` access on the target machine
+    - Network access to the Ubuntu snap store
+  - |-
+    ## Prerequisites
+
+    - A running MAAS region controller (version 3.5 or later)
+    - An API key for your MAAS admin user
+    - PostgreSQL 14 installed on a separate host
+  bad:
+  - |-
+    Install the snap:
+
+    ```bash
+    sudo snap install lxd
+    ```
+
+    (This may fail if snapd is not installed or you are running an older Ubuntu release that does not support the required snap confinement.)
+  - Run the following command to initialise MAAS. You need to have PostgreSQL running already and an API key ready, and make sure your MAAS is version 3.4 or later.
+- id: H11
+  criterion: Branches, alternatives, and optional steps are clearly marked and do not obscure the main path.
+  good:
+  - |-
+    ## Install LXD
+
+    Install the LXD snap:
+
+    ```bash
+    sudo snap install lxd
+    ```
+
+    ### Optional: Use a specific channel
+
+    If you need a specific LXD version, specify the channel:
+
+    ```bash
+    sudo snap install lxd --channel=5.21/stable
+    ```
+  - |-
+    Deploy the charm:
+
+    ```
+    juju deploy postgresql
+    ```
+
+    > **Note:** If you are deploying to a LXD cloud, add the `--constraints virt-type=container` flag.
+  bad:
+  - Install the LXD snap. You can install from the latest/stable channel by running `sudo snap install lxd`, or if you prefer a specific version you can use `sudo snap install lxd --channel=5.21/stable`, or alternatively you could use the latest/edge channel for bleeding-edge features with `sudo snap install lxd --channel=latest/edge`, but that is not recommended for production.
+  - Deploy the charm. You should run `juju deploy postgresql`, but if you're on LXD you need `--constraints virt-type=container`, and if you're on Kubernetes you should use `juju deploy postgresql-k8s` instead, and if you need a specific revision use `--revision`.
+- id: H12
+  criterion: The guide reaches the practical outcome promised in the title and introduction.
+  good:
+  - |-
+    Title: "How to create a LXD cluster"
+
+    (The guide ends with a working multi-node LXD cluster and the user can run `lxc cluster list` to see all members.)
+  - |-
+    Title: "How to back up the MAAS database"
+
+    (The final section walks the user through creating and verifying a PostgreSQL dump file.)
+  bad:
+  - |-
+    Title: "How to create a LXD cluster"
+
+    (The guide ends after initialising the first node but never adds a second member to actually form a cluster.)
+  - |-
+    Title: "How to back up the MAAS database"
+
+    (The guide explains PostgreSQL backup concepts and links to the PostgreSQL documentation, but never shows the actual backup command for MAAS.)
+- id: H13
+  criterion: The guide includes a simple way to verify successful task completion (e.g., controlling CLI output) and clearly describes the expected results, outputs, or changed system states for the user to recognize success.
+  good:
+  - |-
+    ## Verify the cluster
+
+    Check that all members are online:
+
+    ```bash
+    lxc cluster list
+    ```
+
+    You should see output similar to:
+
+    ```
+    +---------+----------------------------+------------------+--------------+----------------+-------------+--------+-------------------+
+    |  NAME   |            URL             |      ROLES       | ARCHITECTURE | FAILURE DOMAIN | DESCRIPTION | STATE  |      MESSAGE      |
+    +---------+----------------------------+------------------+--------------+----------------+-------------+--------+-------------------+
+    | node-01 | https://192.168.1.10:8443  | database-leader  | x86_64       | default        |             | ONLINE | Fully operational |
+    | node-02 | https://192.168.1.11:8443  | database         | x86_64       | default        |             | ONLINE | Fully operational |
+    +---------+----------------------------+------------------+--------------+----------------+-------------+--------+-------------------+
+    ```
+  - |-
+    Confirm that the snap is installed:
+
+    ```bash
+    snap list maas
+    ```
+
+    The output includes the installed version and tracking channel.
+  - |-
+    Verify that all services are running:
+
+    ```{terminal}
+    :user: root
+    :host: maas-region
+    maas status
+
+    bind9         RUNNING   pid 7140, uptime 2 days, 03:12:45
+    dhcpd         RUNNING   pid 7141, uptime 2 days, 03:12:45
+    regiond       RUNNING   pid 7142, uptime 2 days, 03:12:45
+    ```
+
+    All services should show `RUNNING` status.
+  bad:
+  - (The guide ends with the last installation step and provides no verification command or expected output.)
+  - The cluster should now be working.
+- id: H14
+  criterion: The guide includes retry, recovery, rollback, or troubleshooting instructions when failure is likely or costly.
+  good:
+  - |-
+    ## Troubleshooting
+
+    If the `lxd init` command fails with a clustering error, check the network connection between nodes:
+
+    ```bash
+    ping -c 3 <other-node-ip>
+    ```
+
+    If the node was partially joined, remove it and retry:
+
+    ```bash
+    lxc cluster remove <node-name> --force
+    ```
+  - |-
+    If the database migration fails, restore the backup you created in the previous step:
+
+    ```bash
+    sudo pg_restore -d maasdb /var/backups/maas/maasdb-backup.dump
+    ```
+  bad:
+  - (Guide performs a database migration with no mention of what to do if it fails or how to restore from backup.)
+  - If the command fails, try again or contact support.
+- id: H15
+  criterion: Check whether the guide should split into multiple guides for readability.
+  good:
+  - 'A single guide titled "How to back up the MAAS database" covers: stop services, run pg_dump, verify the dump file, restart services. (~500 words, one clear task.)'
+  - 'Separate guides: "How to install MicroCloud", "How to initialise MicroCloud", and "How to add a MicroCloud cluster member" — each addresses one self-contained task.'
+  bad:
+  - 'A single guide titled "How to set up MAAS" covers: install PostgreSQL, configure PostgreSQL, install the MAAS snap, initialise MAAS, configure networking, configure DNS, configure DHCP, enable TLS, add rack controllers, commission machines, and deploy machines. (~4000 words, mixing many distinct tasks.)'
+  - A single guide titled "How to manage Juju" covers bootstrapping, deploying applications, configuring applications, scaling, relating applications, managing users, managing credentials, upgrading, and destroying controllers.
+- id: H16
+  criterion: The guide links to explanation, reference, or tutorial material when necessary to provide further information that might be needed by the user, but does that sparingly to minimise breaking the flow.
+  good:
+  - |-
+    Create a storage pool using the ZFS driver:
+
+    ```bash
+    lxc storage create my-pool zfs
+    ```
+
+    For details on driver-specific options, see the [ZFS storage reference](/reference/storage-zfs).
+  - |-
+    Bootstrap the controller:
+
+    ```
+    juju bootstrap aws my-controller
+    ```
+
+    For background on controller architecture, see [About controllers](/explanation/controllers).
+  bad:
+  - |-
+    Create a storage pool (see [Storage pools](/explanation/storage), [ZFS](/reference/zfs), [Btrfs](/reference/btrfs), [LVM](/reference/lvm), [Ceph](/reference/ceph), [Cephfs](/reference/cephfs), and [Storage driver comparison](/explanation/storage-drivers)) using the ZFS driver (see [ZFS overview](/explanation/zfs-overview)):
+
+    ```bash
+    lxc storage create my-pool zfs
+    ```
+  - |-
+    Create a storage pool:
+
+    ```bash
+    lxc storage create my-pool zfs
+    ```
+
+    (No link to reference docs for storage pool options or the ZFS driver, leaving the user unable to customise the pool without searching the docs.)
