@@ -68,4 +68,4 @@ See `context/how-to-criteria-examples.yaml` for the full list of 26 criteria (C0
 
 ## License
 
-Apache-2.0
+GPL-3.0
