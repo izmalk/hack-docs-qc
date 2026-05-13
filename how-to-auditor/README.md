@@ -5,7 +5,7 @@ A static agent skill that audits How-to Guide documentation drafts against the D
 ## Package Contents
 
 ```
-diataxis-howto-reviewer/
+how-to-auditor/
 ├── SKILL.md                              # Skill definition (frontmatter + instructions)
 ├── README.md                             # This file
 └── context/
@@ -19,22 +19,22 @@ Copy this directory into one of the following locations so OpenCode discovers it
 
 ```bash
 # Project-local (recommended)
-cp -r diataxis-howto-reviewer .opencode/skills/
+cp -r how-to-auditor .opencode/skills/
 
 # Global
-cp -r diataxis-howto-reviewer ~/.config/opencode/skills/
+cp -r how-to-auditor ~/.config/opencode/skills/
 
 # Claude-compatible
-cp -r diataxis-howto-reviewer .claude/skills/
+cp -r how-to-auditor .claude/skills/
 ```
 
-The skill name `diataxis-howto-reviewer` matches `^[a-z0-9]+(-[a-z0-9]+)*$` and the containing directory name.
+The skill name `how-to-auditor` matches `^[a-z0-9]+(-[a-z0-9]+)*$` and the containing directory name.
 
 ## How to Package (ZIP Distribution)
 
 ```bash
-cd diataxis-howto-reviewer
-zip -r ../diataxis-howto-reviewer-v1.0.0.zip .
+cd how-to-auditor
+zip -r ../how-to-auditor-v1.0.0.zip .
 ```
 
 The ZIP contains `SKILL.md` at the root.
@@ -59,7 +59,7 @@ The ZIP contains `SKILL.md` at the root.
 
 | Setting | Value |
 |---------|-------|
-| Skill name | `diataxis-howto-reviewer` |
+| Skill name | `how-to-auditor` |
 | Compatibility | `opencode` |
 | Recommended model | DeepSeek v4 Pro |
 | Minimum context window | 32K tokens |

@@ -1,5 +1,5 @@
 ---
-name: diataxis-howto-reviewer
+name: how-to-auditor
 description: Strict Diátaxis How-to Guide auditor. Evaluates drafts against 26 criteria (C01-C10, H01-H16) with PASS/FAIL verdicts and detailed rationales.
 license: Apache-2.0
 compatibility: opencode
