@@ -1,10 +1,14 @@
 # How-to Auditor
 
-Automated quality checker for How-to Guide documentation. Uses an LLM to evaluate drafts against 26 predefined criteria derived from the Diátaxis framework, producing a structured PASS/FAIL report with rationales for each failure.
+This is the How-to Auditor project from Canonical's Engineering sprint Hackathon at Madrid 2026.
+
+Automated quality checker for How-to guides that verifies a static set of criteria. Uses an LLM to evaluate guides against 26 predefined criteria derived from the Diátaxis framework and other best practices, producing a structured PASS/FAIL report.
+
+Tested and created with Open Code and Open Router, using DeepSeek V4 Pro model.
 
 ## What it does
 
-The auditor verifies that a How-to Guide follows best practices for procedural documentation — correct structure, actionable language, proper formatting, appropriate scope, and completeness. It leverages LLM reasoning to judge compliance rather than relying on simple pattern matching, allowing it to handle nuance and context.
+The auditor verifies that a How-to Guide follows best practices — correct structure, actionable language, proper formatting, appropriate scope, and completeness. It leverages LLM reasoning to judge compliance rather than relying on simple pattern matching, allowing it to handle nuance and context.
 
 ## Repository structure
 
@@ -15,39 +19,20 @@ how-to-auditor/          # LLM skill (self-contained, portable)
 └── context/
     ├── how-to-criteria-examples.yaml   # 26 criteria with GOOD/BAD examples
     └── diataxis-howto-summary.md       # Diátaxis How-to Guide summary
-
-resources/               # Source materials used to develop the criteria
-└── how-to-criteria.md
 ```
 
 ## How to use
 
-### With OpenCode
-
 Copy the skill folder into your project or global skills directory:
 
 ```bash
-# Project-local (recommended)
-cp -r how-to-auditor .opencode/skills/
-
-# Global
-cp -r how-to-auditor ~/.config/opencode/skills/
+cp -r how-to-auditor .agents/skills/
 ```
 
-The agent will discover it automatically. Submit a How-to Guide draft and ask for a review.
+Make sure to activate/enable the skill in your tool of choice.
+For example, run `opencode` and then `/skills` in the folder with `.agents` in it.
 
-### With any LLM (manual)
-
-1. Load `how-to-auditor/SKILL.md` as the system prompt.
-2. Load both files from `how-to-auditor/context/` as additional context.
-3. Provide the How-to Guide draft as the user message.
-4. Set temperature to 0 for deterministic results.
-
-### With Claude / compatible agents
-
-```bash
-cp -r how-to-auditor .claude/skills/
-```
+Finally, asl LLM to verify a particular guide that it can access via file operation, in a prompt, remotely address, etc.
 
 ## Configuration
 

@@ -1,6 +1,6 @@
 # Diátaxis How-to Guide Reviewer — OpenCode Skill
 
-A static agent skill that audits How-to Guide documentation drafts against the Diátaxis framework using 26 predefined verification criteria.
+A static agent skill that audits How-to Guide against the Diátaxis framework using 26 predefined verification criteria.
 
 ## Package Contents
 
