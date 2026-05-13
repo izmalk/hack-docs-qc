@@ -1,35 +1,51 @@
-# Diátaxis How-to Guide Reviewer — Skill Package
+# Diátaxis How-to Guide Reviewer — OpenCode Skill
 
-A static LLM skill that audits How-to Guide documentation drafts against the Diátaxis framework using 26 predefined verification criteria.
+A static agent skill that audits How-to Guide documentation drafts against the Diátaxis framework using 26 predefined verification criteria.
 
 ## Package Contents
 
 ```
-skill-package/
-├── manifest.json                         # Skill metadata and configuration
-├── system_prompt.md                      # Core LLM instructions (entry point)
+diataxis-howto-reviewer/
+├── SKILL.md                              # Skill definition (frontmatter + instructions)
 ├── README.md                             # This file
 └── context/
-    ├── how-to-criteria-examples.yaml     # 26 verification criteria with examples
+    ├── how-to-criteria-examples.yaml     # 26 verification criteria with GOOD/BAD examples
     └── diataxis-howto-summary.md         # Diátaxis How-to Guide summary
 ```
 
-## How to Package
+## How to Install (OpenCode)
+
+Copy this directory into one of the following locations so OpenCode discovers it:
 
 ```bash
-cd skill-package
+# Project-local (recommended)
+cp -r diataxis-howto-reviewer .opencode/skills/
+
+# Global
+cp -r diataxis-howto-reviewer ~/.config/opencode/skills/
+
+# Claude-compatible
+cp -r diataxis-howto-reviewer .claude/skills/
+```
+
+The skill name `diataxis-howto-reviewer` matches `^[a-z0-9]+(-[a-z0-9]+)*$` and the containing directory name.
+
+## How to Package (ZIP Distribution)
+
+```bash
+cd diataxis-howto-reviewer
 zip -r ../diataxis-howto-reviewer-v1.0.0.zip .
 ```
 
-This produces a flat ZIP with `manifest.json` at the root, ready for distribution.
+The ZIP contains `SKILL.md` at the root.
 
 ## How to Use
 
-1. **For skill platforms** that support static skill packages: upload the ZIP. The platform reads `manifest.json` to discover the entry point (`system_prompt.md`) and loads `context/` files into the LLM context alongside the system prompt.
+1. **In OpenCode** — The skill is automatically discovered. The agent can load it via the `skill` tool when a documentation review task is detected.
 
-2. **Manual use** (e.g., with a raw LLM API):
-   - Load `system_prompt.md` as the system message.
-   - Load both files from `context/` as additional context/messages.
+2. **Manual use** (raw LLM API):
+   - Load `SKILL.md` content (below the `---` frontmatter separator) as the system message.
+   - Load both files from `context/` as additional context.
    - Provide the user's How-to Guide draft as the user message.
    - Set `temperature=0` for deterministic output.
 
@@ -43,6 +59,8 @@ This produces a flat ZIP with `manifest.json` at the root, ready for distributio
 
 | Setting | Value |
 |---------|-------|
+| Skill name | `diataxis-howto-reviewer` |
+| Compatibility | `opencode` |
 | Recommended model | DeepSeek v4 Pro |
 | Minimum context window | 32K tokens |
 | Temperature | 0.0 (deterministic) |
